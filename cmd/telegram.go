@@ -28,7 +28,7 @@ func (b *Bot) Run() error {
 			var msg tgbotapi.MessageConfig
 
 			if update.Message.Text == "/start" {
-				msg = tgbotapi.NewMessage(update.Message.Chat.ID, "Привет! Отправь любое сообщение мне и я его перешлю в анонимный чат")
+				msg = tgbotapi.NewMessage(update.Message.Chat.ID, "Привет! Отправь мне любое сообщение и я перешлю его в анонимный канал.")
 				msg.ReplyToMessageID = update.Message.MessageID
 
 			} else {
