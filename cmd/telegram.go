@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"os"
 	"strconv"
 
@@ -9,13 +8,6 @@ import (
 )
 
 type Bot struct {
-	ErrorLog log.Logger
-}
-
-func NewBot() *Bot {
-	return &Bot{
-		ErrorLog: *log.New(os.Stderr, "[ERROR] ", log.Ldate|log.Ltime|log.Lshortfile),
-	}
 }
 
 func (b *Bot) Run() error {
@@ -24,7 +16,7 @@ func (b *Bot) Run() error {
 		return err
 	}
 
-	bot.Debug = true
+	bot.Debug = false
 
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
