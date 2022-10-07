@@ -10,6 +10,10 @@ import (
 type Bot struct {
 }
 
+const (
+	disableImages = false
+)
+
 func (b *Bot) Run() {
 	app := &App{}
 
@@ -67,6 +71,10 @@ func (b *Bot) copyMessageToChannel(bot *tgbotapi.BotAPI, update tgbotapi.Update)
 	channelId, err := strconv.ParseInt(os.Getenv("CHANNEL_ID"), 10, 64)
 	if err != nil {
 		return err
+	}
+
+	if (update.Message.Photo != nil || update.Message.Animation != nil) && disableImages {
+		return nil
 	}
 
 	msg = tgbotapi.NewCopyMessage(channelId, update.Message.Chat.ID, update.Message.MessageID)
