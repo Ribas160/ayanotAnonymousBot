@@ -17,15 +17,9 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Fatalf("error loading env variables: %s", err.Error())
 	}
-
-	app := &App{}
 	bot := &Bot{}
 
-	err := bot.Run()
-
-	if err != nil {
-		app.LogError(err.Error())
-	}
+	bot.Run()
 }
 
 func (a *App) LogError(errorMsg string) {

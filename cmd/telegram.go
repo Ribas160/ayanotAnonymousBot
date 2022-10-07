@@ -10,10 +10,14 @@ import (
 type Bot struct {
 }
 
-func (b *Bot) Run() error {
+func (b *Bot) Run() {
+	app := &App{}
+
 	bot, err := tgbotapi.NewBotAPI(os.Getenv("BOT_TOKEN"))
+
 	if err != nil {
-		return err
+		app.LogError(err.Error())
+		return
 	}
 
 	bot.Debug = false
@@ -25,23 +29,51 @@ func (b *Bot) Run() error {
 
 	for update := range updates {
 		if update.Message != nil {
-			var msg tgbotapi.MessageConfig
 
 			if update.Message.Text == "/start" {
-				msg = tgbotapi.NewMessage(update.Message.Chat.ID, "Привет! Отправь мне любое сообщение и я перешлю его в анонимный канал.")
-				msg.ReplyToMessageID = update.Message.MessageID
+				err := b.startMessage(bot, update)
 
-			} else {
-				channelId, err := strconv.ParseInt(os.Getenv("CHANNEL_ID"), 10, 64)
 				if err != nil {
-					return err
+					app.LogError(err.Error())
 				}
 
-				msg = tgbotapi.NewMessage(channelId, update.Message.Text)
+			} else {
+				err := b.copyMessageToChannel(bot, update)
+				if err != nil {
+					app.LogError(err.Error())
+				}
 			}
-
-			bot.Send(msg)
 		}
+	}
+}
+
+func (b *Bot) startMessage(bot *tgbotapi.BotAPI, update tgbotapi.Update) error {
+	var msg tgbotapi.MessageConfig
+
+	msg = tgbotapi.NewMessage(update.Message.Chat.ID, "Привет! Отправь мне любое сообщение и я перешлю его в анонимный канал.")
+	msg.ReplyToMessageID = update.Message.MessageID
+
+	_, err := bot.Send(msg)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (b *Bot) copyMessageToChannel(bot *tgbotapi.BotAPI, update tgbotapi.Update) error {
+	var msg tgbotapi.CopyMessageConfig
+
+	channelId, err := strconv.ParseInt(os.Getenv("CHANNEL_ID"), 10, 64)
+	if err != nil {
+		return err
+	}
+
+	msg = tgbotapi.NewCopyMessage(channelId, update.Message.Chat.ID, update.Message.MessageID)
+
+	_, err = bot.Send(msg)
+	if err != nil {
+		return err
 	}
 
 	return nil
