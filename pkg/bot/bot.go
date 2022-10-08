@@ -94,7 +94,7 @@ func errorLog(errorMsg string) {
 	}
 
 	currentTime := time.Now()
-	currentDate := currentTime.Format("01-02-2006")
+	currentDate := currentTime.Format("02-01-2006")
 
 	fp, err := os.OpenFile(fmt.Sprintf("%s/%s", newPath, currentDate+".log"), os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
