@@ -1,0 +1,9 @@
+enableTextMessages: true
+enableVoiceMessages: true
+enableImages: true
+enableStickers: true
+enableAnimation: true # GIF
+enableVideos: true
+enableAudios: true
+enableFiles: true
+enableGames: true
