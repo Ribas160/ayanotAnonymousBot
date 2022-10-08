@@ -5,7 +5,7 @@ import (
 	"os"
 	"os/exec"
 
-	PID "github.com/Ribas160/ayanotAnonynousBot/pkg/pid"
+	PID "github.com/Ribas160/ayanotAnonymousBot/pkg/pid"
 )
 
 func main() {

@@ -1,4 +1,4 @@
-module github.com/Ribas160/ayanotAnonynousBot
+module github.com/Ribas160/ayanotAnonymousBot
 
 go 1.19
 
